@@ -39,13 +39,6 @@ public class BooleanSearchEngine implements org.example.SearchEngine {
                     Integer entryValue = entry.getValue();
                     List<org.example.PageEntry> objectList = new ArrayList<>();
                     objectList.add(new org.example.PageEntry(nameFilePDF, k + 1, entryValue));
-
-                    if (wordsIndex.containsKey(entryKey)) {
-                        wordsIndex.get(entryKey).add(new org.example.PageEntry(nameFilePDF, k + 1, entryValue));
-                    } else {
-                        wordsIndex.put(entryKey, objectList);
-                    }
-
                 }
             }
         }
