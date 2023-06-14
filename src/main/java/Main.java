@@ -1,5 +1,3 @@
-package org.example;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,7 +12,7 @@ public class Main {
         try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT);) {
             System.out.println("Запуск сервера в " + SERVER_PORT + "...");
 
-            org.example.BooleanSearchEngine engine = new org.example.BooleanSearchEngine(new File("pdfs"));
+            BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
             System.out.println(engine.search("бизнес"));
 
             Gson gson = new GsonBuilder().create();
@@ -25,10 +23,10 @@ public class Main {
                      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 ) {
                     String word = in.readLine();
-                    List<org.example.PageEntry> pageEntryList = engine.search(word);
+                    List<PageEntry> pageEntryList = engine.search(word);
 
                     if (pageEntryList == null) {
-                        out.println("Нет совпадений");
+                        System.out.println("Нет совпадений");
                     }
 
                     String json = gson.toJson(pageEntryList);

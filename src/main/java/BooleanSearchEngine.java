@@ -1,5 +1,3 @@
-package org.example;
-
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
@@ -7,17 +5,17 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import java.io.*;
 import java.util.*;
 
-public class BooleanSearchEngine implements org.example.SearchEngine {
-    protected Map<String, List<org.example.PageEntry>> wordsIndex;
+public class BooleanSearchEngine implements SearchEngine {
+    protected Map<String, List<PageEntry>> wordsIndex;
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
-        wordsIndex = org.example.IndexWord.getStorage().getIndexWord();
+        wordsIndex = IndexWord.getStorage().getIndexWord();
 
         File[] listFiles = new File(String.valueOf(pdfsDir)).listFiles();
-        for (int i = 0; i < Objects.requireNonNull(listFiles).length; i++) {
+        for (int i = 0; i <Objects.requireNonNull(listFiles).length; i++) {
             var doc = new PdfDocument(new PdfReader(listFiles[i]));
 
-            for (int k = 0; k < doc.getNumberOfPages(); k++) {
+            for (int k = 0; k <doc.getNumberOfPages(); k++) {
                 var file = doc.getPage(k + 1);
                 var text = PdfTextExtractor.getTextFromPage(file);
 
@@ -37,10 +35,10 @@ public class BooleanSearchEngine implements org.example.SearchEngine {
                         frequency.entrySet()) {
                     String entryKey = entry.getKey();
                     Integer entryValue = entry.getValue();
-                    List<org.example.PageEntry> objectList = new ArrayList<>();
-                    objectList.add(new org.example.PageEntry(nameFilePDF, k + 1, entryValue));
+                    List<PageEntry> objectList = new ArrayList<>();
+                    objectList.add(new PageEntry(nameFilePDF, k + 1, entryValue));
                     if (wordsIndex.containsKey(entryKey)) {
-                        wordsIndex.get(entryKey).add(new org.example.PageEntry(nameFilePDF, k + 1, entryValue));
+                        wordsIndex.get(entryKey).add(new PageEntry(nameFilePDF, k + 1, entryValue));
                     } else {
                         wordsIndex.put(entryKey, objectList);
                     }
@@ -49,9 +47,9 @@ public class BooleanSearchEngine implements org.example.SearchEngine {
         }
     }
     @Override
-    public List<org.example.PageEntry> search(String word) {
+    public List<PageEntry> search(String word) {
         String wordToLowerCase = word.toLowerCase();
-        List<org.example.PageEntry> pageEntryList = wordsIndex.getOrDefault(wordToLowerCase, Collections.emptyList());
+        List<PageEntry> pageEntryList = wordsIndex.getOrDefault(wordToLowerCase, Collections.emptyList());
 
         Collections.sort(pageEntryList);
         return pageEntryList;
